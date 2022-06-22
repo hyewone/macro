@@ -1,4 +1,6 @@
 import sys
+import time
+
 # GUI
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
 from PyQt5.QtGui import QIcon
@@ -8,6 +10,7 @@ from PyQt5.QtCore import QCoreApplication
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.alert import Alert
 
 # 문자인식
 import easyocr
@@ -23,7 +26,7 @@ class MyApp(QWidget):
     def initUI(self):
         # 기본설정
         self.setWindowTitle('My First Application')
-        self.move(300, 300)
+        self.move(1400, 300)
         self.resize(400, 200)
         # self.setGeometry(300, 300, 300, 200) : move + resize
         
@@ -62,21 +65,7 @@ class MyApp(QWidget):
         userPwd = driver.find_element(By.ID, 'userPwd')
         userPwd.send_keys('skfkrh@816') # 로그인 할 계정의 패스워드
 
-        # 문자열 인식
-        capchaPng = driver.find_element(By.XPATH, "//*[@id='oCaptchaFrame']") # 입력해야될 문자 이미지 캡쳐하기. iframe
-        reader = easyocr.Reader(['en']) # easyocr 이미지내 인식할 언어 지정
-        result = reader.readtext(capchaPng.screenshot_as_png, detail=0) # 캡쳐한 이미지에서 문자열 인식하기
-
-        print(result[0])
-
-        # 이미지에 점과 직선이 포함되어있어서 문자 인식 데이터 수동 보정
-        capchaValue = result[0].replace(' ', '').replace('$', 'S').replace(',', '')\
-            .replace(':', '').replace('.', '').replace('+', 'T').replace("'", '').replace('`', '')\
-            .replace('e', 'Q').replace('3', 'S').replace('€', 'C').replace('{', '').replace('-', '')
-
-        print(capchaValue)
-        chapchaText = driver.find_element(By.ID, 'oCheckCaptcha')
-        chapchaText.send_keys(capchaValue)
+        # self.easyocrChar
         userPwd.send_keys(Keys.ENTER)
 
     # 인터파크 예매시작
@@ -85,14 +74,57 @@ class MyApp(QWidget):
         # 예매하기 버튼 클릭
         driver.find_element(By.XPATH, "//div[@class='sideBtnWrap']/a[@class='sideBtn is-primary']").click()
         
+        time.sleep(1)
+
         # 예매하기 눌러서 새창이 뜨면 포커스를 새창으로 변경
         driver.switch_to.window(driver.window_handles[1])
-        driver.get_window_position(driver.window_handles[1])
+        # driver.get_window_position(driver.window_handles[1])
 
         # 예매안내가 팝업이 뜨면 닫기. ( ticketingInfo_check : True, False )
-        ticketingInfo_check = self.check_exists_by_element(By.XPATH, "//div[@class='layerWrap']/div[@class='titleArea']/a[@class='closeBtn']")
-        if ticketingInfo_check:
-           driver.find_element(By.XPATH, "//div[@class='layerWrap']/div[@class='titleArea']/a[@class='closeBtn']").click()
+        # ticketingInfo_check = self.check_exists_by_element(By.XPATH, "//div[@class='layerWrap']/div[@class='titleArea']/a[@class='closeBtn']")
+        # if ticketingInfo_check:
+        #    driver.find_element(By.XPATH, "//div[@class='layerWrap']/div[@class='titleArea']/a[@class='closeBtn']").click()
+
+        alert_obj = driver.switch_to.alert
+        alert_obj.accept()
+        # print(alert_obj);
+        # if alert_obj:
+        #     print("No alert1")
+        #     alert_obj.accept()
+        #     # alert_obj
+        
+        # alert_obj = driver.switch_to.alert
+        # print(alert_obj);
+
+        # if alert_obj:
+        #     print("No alert2")
+        #     alert_obj.accept()
+        # driver.switch_to().alert().accept()
+        # al = Alert(driver)
+        # al.accept()
+        # driver.switch_to.alert().accept()
+        
+
+        
+    
+    # 문자인식
+    def easyocrChar(self):
+        print("easyocrChar")
+        # # 문자열 인식
+        # capchaPng = driver.find_element(By.XPATH, "//*[@id='oCaptchaFrame']") # 입력해야될 문자 이미지 캡쳐하기. iframe
+        # reader = easyocr.Reader(['en']) # easyocr 이미지내 인식할 언어 지정
+        # result = reader.readtext(capchaPng.screenshot_as_png, detail=0) # 캡쳐한 이미지에서 문자열 인식하기
+
+        # print(result[0])
+
+        # # 이미지에 점과 직선이 포함되어있어서 문자 인식 데이터 수동 보정
+        # capchaValue = result[0].replace(' ', '').replace('$', 'S').replace(',', '')\
+        #     .replace(':', '').replace('.', '').replace('+', 'T').replace("'", '').replace('`', '')\
+        #     .replace('e', 'Q').replace('3', 'S').replace('€', 'C').replace('{', '').replace('-', '')
+
+        # print(capchaValue)
+        # chapchaText = driver.find_element(By.ID, 'oCheckCaptcha')
+        # chapchaText.send_keys(capchaValue)
 
     # 멜론티켓
     def startMelon(self):
