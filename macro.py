@@ -13,6 +13,7 @@ from selenium.webdriver.support.select import Select
 import easyocr
 import time
 import traceback
+import js2py
 
 driver = webdriver.Chrome('C:\chromedriver.exe')
 driver.set_window_size(800, 1000)  # (가로, 세로)
@@ -97,6 +98,9 @@ class MyApp(QWidget):
 
     def gotoTicketing(self):
         driver.get('http://ticket.interpark.com/Ticket/Goods/GoodsInfo.asp?GoodsCode=' + '22004761')
+        
+        global step
+        step = 0
 
     # 매크로 매니저
     def macroManager(self):
@@ -152,6 +156,8 @@ class MyApp(QWidget):
             selDay.select_by_value(arr1[0][0])
             time.sleep(0.5)
             selHoiCha.select_by_index(arr1[0][1])
+
+            # driver.switch_to.default_content()
             
             global step
             step = 2
@@ -165,10 +171,41 @@ class MyApp(QWidget):
         print("selSeat")
         
         try :
-            # seats = driver.find_elements(By.XPATH, "//img[@class='stySeat' and contains(@title, 'A석') and contains(@title, '1층')]")
-            seats = driver.find_elements(By.XPATH, "//img[@class='stySeat']")
-            print(seats)
+            driver.switch_to.frame(driver.find_element(By.XPATH, "//*[@id='ifrmSeatDetail']"))
+            time.sleep(3)
+            seats = driver.find_elements(By.XPATH, "//*[@id='TmgsTable']/tbody/tr/td/img[contains(@title, '1층') and contains(@title, 'S석')]")
+            # seats2 = driver.find_elements_by_xpath("//*[@id='TmgsTable']/tbody/tr/td/img[@class='stySeat' and contains(@title, '1층') and contains(@title, 'S석')]")
+
+            # # element.get_attribute("attribute name")
+
+            for item in seats:
+                print(item.get_attribute("title"))
+
+            seats.sort(key=lambda e: e.get_attribute("title"))
+
+            for item in seats:
+                print(item.get_attribute("title"))
+
+            # print(seats)
             print(len(seats))
+
+            # arr = [['3', '1층', 'A열', '194', '101']
+            #     ,['3', '1층', 'A열', '195', '101']
+            #     ,['3', '1층', 'A열', '196', '101']
+            #     ,['3', '1층', 'A열', '197', '101']
+            # ]
+
+            # scriptJS='''
+            #     function javascriptCode(a,b,c,d,e) {
+            #         SelectSeat('SID2', a, b, c, d, e);
+            #     }
+            # '''
+
+            # fnJs = js2py.eval_js(scriptJS)
+
+            # for item in arr:
+            #     # 등급, 층, 열, 좌석번호, 구역
+            #     fnJs(item[0], item[1], item[2], item[3], item[4] )
 
             global step
             step = 3
