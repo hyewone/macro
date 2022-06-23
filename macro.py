@@ -181,13 +181,15 @@ class MyApp(QWidget):
             for item in seats:
                 print(item.get_attribute("title"))
 
-            seats.sort(key=lambda e: e.get_attribute("title"))
-
-            for item in seats:
-                print(item.get_attribute("title"))
+            # int(x[0:]
+            seats.sort(key=lambda e: int(e.get_attribute("title")[e.get_attribute("title").find("열-")+1:]))
 
             # print(seats)
             print(len(seats))
+            print("------------------------------------------------------")
+
+            for item in seats:
+                print(item.get_attribute("title"))
 
             # arr = [['3', '1층', 'A열', '194', '101']
             #     ,['3', '1층', 'A열', '195', '101']
