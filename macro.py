@@ -18,7 +18,9 @@ import js2py
 driver = webdriver.Chrome('C:\chromedriver.exe')
 driver.set_window_size(800, 1000)  # (가로, 세로)
 
-step = 0
+g_step = 0
+g_wait = 5
+g_repeatCnt = 0
 
 # 탐색 날짜는... 평일부터 배치해놓자 확률을 높이기 위해
 # 만약 해당 날짜에 vip석이 앞줄이 안 남아 있으면 다음 회차로 진행
@@ -30,11 +32,13 @@ step = 0
 g_id = "won5854"
 # 패스워드 ex: skfkrh@816
 g_pwd = "skfkrh@816"
+# 생년월일 ex: YYMMDD
+g_birthDay = "951209"
 # 상품번호 ex: 22004761
 g_goodsNum = "22004761"
-# 날짜 ex: 20220715
+# 공연날짜 ex: 20220715
 g_date = "20220715"
-# 회차 ex: 1, 2
+# 공연회차 ex: 1, 2
 g_hoicha = 1
 # 층 ex: 1층
 g_floor = "1층"
@@ -102,8 +106,8 @@ class MyApp(QWidget):
         driver = webdriver.Chrome('C:\chromedriver.exe')
         driver.set_window_size(800, 1000)  # (가로, 세로)
 
-        global step
-        step = 0
+        global g_step
+        g_step = 0
 
     # 인터파크 로그인
     def loginInterpark(self):
@@ -126,21 +130,24 @@ class MyApp(QWidget):
     def gotoTicketing(self):
         driver.get('http://ticket.interpark.com/Ticket/Goods/GoodsInfo.asp?GoodsCode=' + g_goodsNum)
         
-        global step
-        step = 0
+        global g_step
+        g_step = 0
 
     # 매크로 매니저
     def macroManager(self):
-        print("macroManager ::: " + str(step))
+        print("macroManager ::: " + str(g_step))
         # 예매하기
-        if step == 0 :
+        if g_step == 0 :
             self.startInterpark()
         # 회차선택
-        elif step == 1 :
+        elif g_step == 1 :
             self.selDayHoicha()
         # 좌석선택
-        elif step == 2 :
+        elif g_step == 2 :
             self.selSeat()
+        # 나머지 프로세스
+        elif g_step == 3 :
+            self.afterProcess()
 
 
     # 인터파크 예매시작
@@ -149,8 +156,8 @@ class MyApp(QWidget):
             # 예매하기 버튼 클릭
             driver.find_element(By.XPATH, "//div[@class='sideBtnWrap']/a[@class='sideBtn is-primary']").click()
 
-            global step
-            step = 1
+            global g_step
+            g_step = 1
 
             # alert 확인버튼 누른 후 문자입력
             # time.sleep(5)
@@ -181,11 +188,9 @@ class MyApp(QWidget):
             selDay.select_by_value(arr1[0][0])
             time.sleep(0.5)
             selHoiCha.select_by_index(arr1[0][1])
-
-            # driver.switch_to.default_content()
             
-            global step
-            step = 2
+            global g_step
+            g_step = 2
             self.macroManager()
 
         except:
@@ -197,13 +202,13 @@ class MyApp(QWidget):
         
         try :
             driver.switch_to.frame(driver.find_element(By.XPATH, "//*[@id='ifrmSeatDetail']"))
-            time.sleep(3)
+            time.sleep(0.5)
             seats = driver.find_elements(By.XPATH, "//*[@id='TmgsTable']/tbody/tr/td/img[contains(@title, '" + g_floor + "') and contains(@title, '" + g_seatGrade + "') and contains(@title, '" + g_block + "')]")
             # seats2 = driver.find_elements_by_xpath("//*[@id='TmgsTable']/tbody/tr/td/img[@class='stySeat' and contains(@title, '1층') and contains(@title, 'S석')]")
             # # element.get_attribute("attribute name")
 
-            for item in seats:
-                print(item.get_attribute("title"))
+            # for item in seats:
+            #     print(item.get_attribute("title"))
 
             if g_block != "" :
                 seats.sort(key=lambda e: int(e.get_attribute("title")[e.get_attribute("title").find("열-")+2:]) )
@@ -214,20 +219,76 @@ class MyApp(QWidget):
             print(len(seats))
             print("------------------------------------------------------")
 
-            for item in seats:
-                print(item.get_attribute("title"))
+            # for item in seats:
+            #     print(item.get_attribute("title"))
 
-            # if len(seats) < 1 :
-            #     print("원하는 좌석이 없으면 다음 회차 탐색")
+            if len(seats) < 1 :
+                print("원하는 좌석이 없으면 다음 회차 탐색")
+            else :
 
-            global step
-            step = 3
+                global g_repeatCnt
+                g_repeatCnt = 4 if len(seats) > 3 else len(seats)
+
+                for i in range(0, g_repeatCnt) :
+                    seats[i].click()
+
+            global g_step
+            g_step = 3
             self.macroManager()
 
         
         except:
             traceback.print_exc()
 
+    # 좌석선택 후 결제완료까지
+    def afterProcess(self):
+        print("afterProcess")
+        
+        try :
+            # 좌석선택완료 버튼
+            driver.switch_to.default_content()
+            driver.switch_to.frame(driver.find_element(By.XPATH, "//div[@id='divBookSeat']/iframe[@id='ifrmSeat']"))
+            driver.find_element(By.XPATH, "/html/body/form[1]/div/div[1]/div[3]/div/div[4]/a").click()
+
+            # 매수선택
+            driver.switch_to.default_content()
+            driver.switch_to.frame(driver.find_element(By.XPATH, "//*[@id='ifrmBookStep']"))
+            # driver.implicitly_wait(g_wait)
+            time.sleep(0.5)
+            print(str(g_repeatCnt))
+            Select(driver.find_element(By.XPATH, "//*[@id='PriceRow004']/td[3]/select")).select_by_value(str(g_repeatCnt))
+
+            
+            driver.switch_to.default_content()
+            driver.find_element(By.XPATH, "//*[@id='SmallNextBtnImage']").click()
+            
+
+            # 생년월일
+            driver.switch_to.default_content()
+            driver.switch_to.frame(driver.find_element(By.XPATH, "//*[@id='ifrmBookStep']"))
+            time.sleep(0.5)
+            driver.find_element(By.XPATH, "//*[@id='YYMMDD']").send_keys(g_birthDay)
+            driver.switch_to.default_content()
+            driver.find_element(By.XPATH, "//*[@id='SmallNextBtnImage']").click()
+
+            # 결제정보
+            driver.switch_to.default_content()
+            driver.switch_to.frame(driver.find_element(By.XPATH, "//*[@id='ifrmBookStep']"))
+            driver.find_element(By.XPATH, "//*[@id='Payment_22004']/td/input").click() # 무통장입금
+            Select(driver.find_element(By.XPATH, "//*[@id='BankCode']")).select_by_value("38056") # 신한은행
+            driver.switch_to.default_content()
+            driver.find_element(By.XPATH, "//*[@id='SmallNextBtnImage']").click()
+
+            # 동의
+            driver.switch_to.default_content()
+            driver.switch_to.frame(driver.find_element(By.XPATH, "//*[@id='ifrmBookStep']"))
+            time.sleep(0.5)
+            driver.find_element(By.XPATH, "//*[@id='checkAll']").click()
+            driver.switch_to.default_content()
+            # driver.find_element(By.XPATH, "//*[@id='LargeNextBtnImage']").click()
+        
+        except:
+            traceback.print_exc()
 
     def easyocrChar(self):
         print("easyocrChar")
