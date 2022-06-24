@@ -20,6 +20,33 @@ driver.set_window_size(800, 1000)  # (가로, 세로)
 
 step = 0
 
+# 탐색 날짜는... 평일부터 배치해놓자 확률을 높이기 위해
+# 만약 해당 날짜에 vip석이 앞줄이 안 남아 있으면 다음 회차로 진행
+
+# 취켓팅일때는 좌석을 계속 탐색...하여 성공할때까지...........
+
+### 사용자 변수 ###
+# 아이디 ex: won5854
+g_id = "won5854"
+# 패스워드 ex: skfkrh@816
+g_pwd = "skfkrh@816"
+# 상품번호 ex: 22004761
+g_goodsNum = "22004761"
+# 날짜 ex: 20220715
+g_date = "20220715"
+# 회차 ex: 1, 2
+g_hoicha = 1
+# 층 ex: 1층
+g_floor = "1층"
+# 석 ex: S석, VIP석
+g_seatGrade = "S석"
+# 구역 ex: C열, E열
+g_block = ""
+
+# 테스트 회차 2022년 07월 15일 1회차
+arr1 = [[g_date, g_hoicha]]
+
+
 class MyApp(QWidget):
 
     def __init__(self):
@@ -85,19 +112,19 @@ class MyApp(QWidget):
 
             driver.switch_to.frame(driver.find_element(By.XPATH, "//div[@class='leftLoginBox']/iframe[@title='login']"))
             userId = driver.find_element(By.ID, 'userId')
-            userId.send_keys('won5854') # 로그인 할 계정 id
+            userId.send_keys(g_id)
             userPwd = driver.find_element(By.ID, 'userPwd')
-            userPwd.send_keys('skfkrh@816') # 로그인 할 계정의 패스워드
+            userPwd.send_keys(g_pwd) # 로그인 할 계정의 패스워드
             time.sleep(5)
             userPwd.send_keys(Keys.ENTER)
-            # driver.get('http://ticket.interpark.com/Ticket/Goods/GoodsInfo.asp?GoodsCode=' + '22004761')
             self.gotoTicketing()
         
         except:
             traceback.print_exc()
 
+    # 상품 티켓팅 페이지 이동
     def gotoTicketing(self):
-        driver.get('http://ticket.interpark.com/Ticket/Goods/GoodsInfo.asp?GoodsCode=' + '22004761')
+        driver.get('http://ticket.interpark.com/Ticket/Goods/GoodsInfo.asp?GoodsCode=' + g_goodsNum)
         
         global step
         step = 0
@@ -141,8 +168,6 @@ class MyApp(QWidget):
         print("selDayHoicha")
 
         try :
-            # 테스트 회차 2022년 07월 15일 1회차
-            arr1 = [['20220715', 1]]
             
             # 예매하기 눌러서 새창이 뜨면 포커스를 새창으로 변경
             driver.switch_to.window(driver.window_handles[1])
@@ -173,16 +198,17 @@ class MyApp(QWidget):
         try :
             driver.switch_to.frame(driver.find_element(By.XPATH, "//*[@id='ifrmSeatDetail']"))
             time.sleep(3)
-            seats = driver.find_elements(By.XPATH, "//*[@id='TmgsTable']/tbody/tr/td/img[contains(@title, '1층') and contains(@title, 'S석')]")
+            seats = driver.find_elements(By.XPATH, "//*[@id='TmgsTable']/tbody/tr/td/img[contains(@title, '" + g_floor + "') and contains(@title, '" + g_seatGrade + "') and contains(@title, '" + g_block + "')]")
             # seats2 = driver.find_elements_by_xpath("//*[@id='TmgsTable']/tbody/tr/td/img[@class='stySeat' and contains(@title, '1층') and contains(@title, 'S석')]")
-
             # # element.get_attribute("attribute name")
 
             for item in seats:
                 print(item.get_attribute("title"))
 
-            # int(x[0:]
-            seats.sort(key=lambda e: int(e.get_attribute("title")[e.get_attribute("title").find("열-")+1:]))
+            if g_block != "" :
+                seats.sort(key=lambda e: int(e.get_attribute("title")[e.get_attribute("title").find("열-")+2:]) )
+            else :
+                seats.sort(key=lambda e: ( e.get_attribute("title")[e.get_attribute("title").find("층-")+2:e.get_attribute("title").find("층-")+3] , int(e.get_attribute("title")[e.get_attribute("title").find("열-")+2:]) ))
 
             # print(seats)
             print(len(seats))
@@ -191,23 +217,8 @@ class MyApp(QWidget):
             for item in seats:
                 print(item.get_attribute("title"))
 
-            # arr = [['3', '1층', 'A열', '194', '101']
-            #     ,['3', '1층', 'A열', '195', '101']
-            #     ,['3', '1층', 'A열', '196', '101']
-            #     ,['3', '1층', 'A열', '197', '101']
-            # ]
-
-            # scriptJS='''
-            #     function javascriptCode(a,b,c,d,e) {
-            #         SelectSeat('SID2', a, b, c, d, e);
-            #     }
-            # '''
-
-            # fnJs = js2py.eval_js(scriptJS)
-
-            # for item in arr:
-            #     # 등급, 층, 열, 좌석번호, 구역
-            #     fnJs(item[0], item[1], item[2], item[3], item[4] )
+            # if len(seats) < 1 :
+            #     print("원하는 좌석이 없으면 다음 회차 탐색")
 
             global step
             step = 3
