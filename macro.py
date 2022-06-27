@@ -18,7 +18,6 @@ import js2py
 driver = webdriver.Chrome('C:\chromedriver.exe')
 driver.set_window_size(800, 1000)  # (가로, 세로)
 
-g_step = 0
 g_wait = 5
 g_repeatCnt = 0
 
@@ -249,16 +248,18 @@ class MyApp(QWidget):
 
     # 재시작
     def reStart(self):
-        global driver
-        driver = webdriver.Chrome('C:\chromedriver.exe')
-        driver.set_window_size(800, 1000)  # (가로, 세로)
+        try :
+            global driver
+            driver = webdriver.Chrome('C:\chromedriver.exe')
+            driver.set_window_size(800, 1000)  # (가로, 세로)
 
-        # global g_step
-        # g_step = 0
+        except:
+            traceback.print_exc()
 
     # 인터파크 로그인
     def loginInterpark(self):
         try :
+            driver.switch_to.window(driver.window_handles[0])
             driver.get('https://ticket.interpark.com/Gate/TPLogin.asp') # 페이지 이동
 
             driver.switch_to.frame(driver.find_element(By.XPATH, "//div[@class='leftLoginBox']/iframe[@title='login']"))
@@ -283,26 +284,12 @@ class MyApp(QWidget):
             driver.get('https://poticket.interpark.com/Book/BookSession.asp?GroupCode=' + g_goodsNum +'&Tiki=N&PlayDate=20220715&PlaySeq=046')
         except:
             traceback.print_exc()
-        # global g_step
-        # g_step = 0
-        # g_step = 1
 
     # 인터파크 예매시작
     def startInterpark(self):
         try :
             # 예매하기 버튼 클릭
             driver.find_element(By.XPATH, "//div[@class='sideBtnWrap']/a[@class='sideBtn is-primary']").click()
-
-            global g_step
-            g_step = 1
-
-            # alert 확인버튼 누른 후 문자입력
-            # time.sleep(5)
-
-            # 예매안내가 팝업이 뜨면 닫기. ( ticketingInfo_check : True, False )
-            # ticketingInfo_check = self.check_exists_by_element(By.XPATH, "//div[@class='layerWrap']/div[@class='titleArea']/a[@class='closeBtn']")
-            # if ticketingInfo_check:
-            #    driver.find_element(By.XPATH, "//div[@class='layerWrap']/div[@class='titleArea']/a[@class='closeBtn']").click()
         
         except:
             traceback.print_exc()
@@ -327,10 +314,7 @@ class MyApp(QWidget):
             selDay.select_by_value(g_date)
             time.sleep(0.5)
             selHoiCha.select_by_index(g_hoicha)
-            
-            # global g_step
-            # g_step = 2
-            # self.macroManager()
+
             self.selSeat()
 
         except:
@@ -370,9 +354,6 @@ class MyApp(QWidget):
             for i in range(0, g_repeatCnt) :
                 seats[i].click()
 
-            # global g_step
-            # g_step = 3
-            # self.macroManager()
             self.afterProcess()
 
         
@@ -402,18 +383,6 @@ class MyApp(QWidget):
         except:
             traceback.print_exc()
 
-    # 좌석선택완료
-    def completeSelSeat(self):
-        
-        driver.switch_to.default_content()
-        driver.switch_to.frame(driver.find_element(By.XPATH, "//*[@id='ifrmBookStep']"))
-        time.sleep(0.5)
-        global g_repeatCnt
-        g_repeatCnt = Select(driver.find_element(By.XPATH, "//*[contains(@id,'PriceRow00')]/td[3]/select")).getOptions().size()
-        print(driver.find_element(By.XPATH, "//*[contains(@id,'PriceRow00')]/td[3]/select"))
-        print("completeSelSeat :::" + str(g_repeatCnt))
-        self.afterProcess()
-
     # 좌석선택 후 결제완료까지
     def afterProcess(self):
         # print("afterProcess")
@@ -427,11 +396,9 @@ class MyApp(QWidget):
             # 매수선택
             driver.switch_to.default_content()
             driver.switch_to.frame(driver.find_element(By.XPATH, "//*[@id='ifrmBookStep']"))
-            # driver.implicitly_wait(g_wait)
             time.sleep(0.5)
-            print(str(g_repeatCnt))
-            ticketCntSel = Select(driver.find_element(By.XPATH, "//*[@id='PriceRow00" + str(g_repeatCnt) + "']/td[3]/select"))
-            ticketCntSel.select_by_value(ticketCntSel.options.size())
+            ticketCntSel = Select(driver.find_element(By.XPATH, "//*[contains(@id,'PriceRow00')]/td[3]/select"))
+            ticketCntSel.select_by_value(str(len(ticketCntSel.options)-1))
 
             driver.switch_to.default_content()
             driver.find_element(By.XPATH, "//*[@id='SmallNextBtnImage']").click()
@@ -491,22 +458,6 @@ class MyApp(QWidget):
     def changeComboBlock(self):
         global g_block
         g_block = self.cbBlock.currentText()
-
-    # # 매크로 매니저
-    # def macroManager(self):
-    #     # print("macroManager ::: " + str(g_step))
-    #     # 예매하기
-    #     if g_step == 0 :
-    #         self.startInterpark()
-    #     # 회차선택
-    #     elif g_step == 1 :
-    #         self.selDayHoicha()
-    #     # 좌석선택
-    #     elif g_step == 2 :
-    #         self.selSeat()
-    #     # 나머지 프로세스
-    #     elif g_step == 3 :
-    #         self.afterProcess()
     
     #def easyocrChar(self):
         # print("easyocrChar")
