@@ -388,9 +388,10 @@ class MyApp(QWidget):
     def reSelSeatPay(self):
         # print("reSelSeat")
         try :
+            driver.execute_script("fnPrevStep();")
+            time.sleep(0.5)
             driver.switch_to.default_content()
-            driver.find_element(By.XPATH, "//*[@id='SmallPrevBtnImage']").click()
-            driver.find_element(By.XPATH, "//*[@id='NaviImg']").click()
+            driver.switch_to.frame(driver.find_element(By.XPATH, "//div[@id='divBookSeat']/iframe[@id='ifrmSeat']"))
             self.selSeat()
         except:
             traceback.print_exc()
