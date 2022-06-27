@@ -225,10 +225,15 @@ class MyApp(QWidget):
         btn.setGeometry(250, 530, 200, 50)
         btn.clicked.connect(self.afterProcess)
         
-        # 7. 재시작
-        btn = QPushButton('7. 재시작', self)
+        # 7. 회차 재선택
+        btn = QPushButton('7. 회차 재선택', self)
         btn.setGeometry(30, 610, 200, 50)
-        btn.clicked.connect(self.reStart)
+        btn.clicked.connect(self.selDayHoicha)
+
+         # 8. 재시작
+        btn = QPushButton('8. 재시작', self)
+        btn.setGeometry(250, 610, 200, 50)
+        btn.clicked.connect(self.reStart) 
 
         # # 종료 버튼
         # btn2 = QPushButton('종료', self)
@@ -271,12 +276,13 @@ class MyApp(QWidget):
     # 상품 티켓팅 페이지 이동
     def gotoTicketing(self):
         # driver.get('http://ticket.interpark.com/Ticket/Goods/GoodsInfo.asp?GoodsCode=' + g_goodsNum)
-
-        driver.execute_script("window.open('');")
-        driver.switch_to.window(driver.window_handles[1])
-        # 새로운 화면에서 열리도록 해야하나?
-        driver.get('https://poticket.interpark.com/Book/BookSession.asp?GroupCode=' + g_goodsNum +'&Tiki=N&PlayDate=20220715&PlaySeq=046')
-
+        try :
+            driver.execute_script("window.open('');")
+            driver.switch_to.window(driver.window_handles[1])
+            # 새로운 화면에서 열리도록 해야하나?
+            driver.get('https://poticket.interpark.com/Book/BookSession.asp?GroupCode=' + g_goodsNum +'&Tiki=N&PlayDate=20220715&PlaySeq=046')
+        except:
+            traceback.print_exc()
         # global g_step
         # g_step = 0
         # g_step = 1
@@ -396,6 +402,18 @@ class MyApp(QWidget):
         except:
             traceback.print_exc()
 
+    # 좌석선택완료
+    def completeSelSeat(self):
+        
+        driver.switch_to.default_content()
+        driver.switch_to.frame(driver.find_element(By.XPATH, "//*[@id='ifrmBookStep']"))
+        time.sleep(0.5)
+        global g_repeatCnt
+        g_repeatCnt = Select(driver.find_element(By.XPATH, "//*[contains(@id,'PriceRow00')]/td[3]/select")).getOptions().size()
+        print(driver.find_element(By.XPATH, "//*[contains(@id,'PriceRow00')]/td[3]/select"))
+        print("completeSelSeat :::" + str(g_repeatCnt))
+        self.afterProcess()
+
     # 좌석선택 후 결제완료까지
     def afterProcess(self):
         # print("afterProcess")
@@ -411,9 +429,10 @@ class MyApp(QWidget):
             driver.switch_to.frame(driver.find_element(By.XPATH, "//*[@id='ifrmBookStep']"))
             # driver.implicitly_wait(g_wait)
             time.sleep(0.5)
-            # print(str(g_repeatCnt))
-            Select(driver.find_element(By.XPATH, "//*[@id='PriceRow004']/td[3]/select")).select_by_value(str(g_repeatCnt))
-            
+            print(str(g_repeatCnt))
+            ticketCntSel = Select(driver.find_element(By.XPATH, "//*[@id='PriceRow00" + str(g_repeatCnt) + "']/td[3]/select"))
+            ticketCntSel.select_by_value(ticketCntSel.options.size())
+
             driver.switch_to.default_content()
             driver.find_element(By.XPATH, "//*[@id='SmallNextBtnImage']").click()
 
