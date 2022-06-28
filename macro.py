@@ -29,7 +29,7 @@ g_pwd = "skfkrh@816"
 # 생년월일
 g_birth = "951209"
 # 세션 ID
-g_sessionId = 'BB890A9FB21AA27510A0D37CF96916A6'
+g_sessionId = ''
 # 상품번호 ex: 22004761
 g_goodsNum = "22007922"
 # 날짜 ex: 20220715
@@ -118,6 +118,13 @@ class MyApp(QWidget):
         self.lineEditBirth = QLineEdit(self)
         self.lineEditBirth.setGeometry(100, 90, 110, 25)
         self.lineEditBirth.textEdited.connect(self.changeInputBirth)
+        
+        # 세션ID
+        labelBirth = QLabel('세션ID:', self)
+        labelBirth.setGeometry(250, 90, 70, 25)
+        self.lineEditSession = QLineEdit(self)
+        self.lineEditSession.setGeometry(320, 90, 110, 25)
+        self.lineEditSession.textEdited.connect(self.changeInputSession)
         
         label1 = QLabel('---------------------------------------------------', self)
         label1.setGeometry(30, 125, 450, 25)
@@ -295,7 +302,7 @@ class MyApp(QWidget):
             # 오픈시 대기링크, 평상시 사용불가
             # driver.get('https://ordo.interpark.com/wait?pid=' + g_goodsNum + '&k=9fac82df253ef573e1d968928a6dbbf1&t=1656394047923&d=p&pmcode&genreCode&GroupCode=' + g_goodsNum + '&Tiki=&Point=&PlayDate=20220701&PlaySeq=028&BizCode=&BizMemberCode=&OneStopInfo&Language')
             # 평상시 사용링크, 다른공연 오픈 시 테스트해보자.. 세션 id는 아무티켓예매 페이지에서 가능가능
-            driver.get('https://poticket.interpark.com/Book/BookMain.asp?GroupCode=' + g_goodsNum + '&Tiki=N&BizCode=WEBBR&BizMemberCode=&PlayDate=20220805&PlaySeq=&SessionId=' + g_sessionId + '&SIDBizCode=WEBBR&WaitBDate=&WaitBDateSeq=')
+            driver.get('https://poticket.interpark.com/Book/BookMain.asp?GroupCode=' + g_goodsNum + '&Tiki=N&BizCode=WEBBR&BizMemberCode=&PlayDate=&PlaySeq=&SessionId=' + g_sessionId + '&SIDBizCode=WEBBR&WaitBDate=&WaitBDateSeq=')
             self.startInterpark()
         except:
             traceback.print_exc()
@@ -457,6 +464,9 @@ class MyApp(QWidget):
     def changeInputBirth(self):
         global g_birth
         g_birth = self.lineEditBirth.text()
+    def changeInputSession(self):
+        global g_sessionId
+        g_sessionId = self.lineEditSession.text()
     def changeInputNo(self):
         global g_goodsNum
         g_goodsNum = self.lineEditNo.text()
