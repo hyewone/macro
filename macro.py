@@ -31,44 +31,45 @@ g_birth = "951209"
 # 상품번호 ex: 22004761
 g_goodsNum = "22004761"
 # 날짜 ex: 20220715
-g_date = "20220715"
+g_date = "20220805"
 # 회차 ex: 1, 2
-g_hoicha = '1'
+g_hoicha = '2'
 # 층 ex: 1층
 g_floor = "1층"
 # 석 ex: S석, VIP석
-g_seatGrade = "S석"
+g_seatGrade = "VIP석"
 # 구역 ex: C열, E열
-g_block = "A열"
+g_block = "B열"
 
-# 테스트 회차 2022년 07월 15일 1회차
-arr1 = [ ['20220715', 1]
-        ,['20220719', 1]
-        ,['20220720', 2]
-        ,['20220722', 2]
-        ,['20220724', 1]
-        ,['20220726', 1]
-        ,['20220727', 2]
-        ,['20220729', 1]
-        ,['20220731', 2]
-        ,['20220802', 1]
-        ,['20220803', 2]
-        ,['20220805', 2]
-        ,['20220807', 1]]
+# # 테스트 회차 2022년 07월 15일 1회차
+# arr1 = [ ['20220715', 1]
+#         ,['20220719', 1]
+#         ,['20220720', 2]
+#         ,['20220722', 2]
+#         ,['20220724', 1]
+#         ,['20220726', 1]
+#         ,['20220727', 2]
+#         ,['20220729', 1]
+#         ,['20220731', 2]
+#         ,['20220802', 1]
+#         ,['20220803', 2]
+#         ,['20220805', 2]
+#         ,['20220807', 1]]
 
-g_date_arr = [   '20220715'
-                ,'20220719'
+g_date_arr = [   '20220805'
+                ,'20220727'
+                ,'20220803'
+                ,'20220802'
                 ,'20220720'
+                ,'20220715'
+                ,'20220719'
                 ,'20220722'
                 ,'20220724'
                 ,'20220726'
-                ,'20220727'
                 ,'20220729'
                 ,'20220731'
-                ,'20220802'
-                ,'20220803'
-                ,'20220805'
                 ,'20220807']
+
 g_hoicah_arr = ['1', '2']
 g_floor_arr = ['1층', '2층', '3층']
 g_grade_arr = ['VIP석', 'S석', 'A석', 'R석', 'B석']
@@ -208,6 +209,7 @@ class MyApp(QWidget):
         btn = QPushButton('3. 회차 및 좌석선택', self)
         btn.setGeometry(30, 450, 200, 50)
         btn.clicked.connect(self.selDayHoicha)
+        btn.setStyleSheet("color: blue;")
 
         # 4. 좌석단계 좌석 재선택
         btn = QPushButton('4. 좌석 - 좌석 재선택', self)
@@ -221,8 +223,9 @@ class MyApp(QWidget):
 
         # 6. 좌석선택완료
         btn = QPushButton('6. 좌석선택완료', self)
-        btn.setGeometry(250, 530, 200, 50)
+        btn.setGeometry(250, 530, 200, 50) 
         btn.clicked.connect(self.afterProcess)
+        btn.setStyleSheet("color: red;")
         
         # 7. 회차 재선택
         btn = QPushButton('7. 회차 재선택', self)
@@ -276,12 +279,15 @@ class MyApp(QWidget):
 
     # 상품 티켓팅 페이지 이동
     def gotoTicketing(self):
-        # driver.get('http://ticket.interpark.com/Ticket/Goods/GoodsInfo.asp?GoodsCode=' + g_goodsNum)
         try :
+            driver.switch_to.window(driver.window_handles[0])
+            # driver.get('http://ticket.interpark.com/Ticket/Goods/GoodsInfo.asp?GoodsCode=' + g_goodsNum)
             driver.execute_script("window.open('');")
             driver.switch_to.window(driver.window_handles[1])
             # 새로운 화면에서 열리도록 해야하나?
-            driver.get('https://poticket.interpark.com/Book/BookSession.asp?GroupCode=' + g_goodsNum +'&Tiki=N&PlayDate=20220715&PlaySeq=046')
+            driver.get('https://poticket.interpark.com/Book/BookSession.asp?GroupCode=' + g_goodsNum +'&Tiki=N&PlayDate='+ g_date + '&PlaySeq=')
+            # driver.get('https://ordo.interpark.com/wait?pid=22004761&k=9fac82df253ef573e1d968928a6dbbf1&t=1656394047923&d=p&pmcode&genreCode&GroupCode=22004761&Tiki=&Point=&PlayDate=20220701&PlaySeq=028&BizCode=&BizMemberCode=&OneStopInfo&Language')
+            self.startInterpark()
         except:
             traceback.print_exc()
 
@@ -303,6 +309,7 @@ class MyApp(QWidget):
             # driver.switch_to.window(driver.window_handles[1])
             driver.get_window_position(driver.window_handles[1])
 
+            driver.switch_to.default_content()
             driver.switch_to.frame(driver.find_element(By.XPATH, "//div[@id='divBookSeat']/iframe[@id='ifrmSeat']"))
 
             selDay = Select(driver.find_element(By.ID, 'PlayDate'))
@@ -354,7 +361,8 @@ class MyApp(QWidget):
             for i in range(0, g_repeatCnt) :
                 seats[i].click()
 
-            self.afterProcess()
+            if g_repeatCnt > 0 :
+                self.afterProcess()
 
         
         except:
