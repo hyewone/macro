@@ -284,9 +284,12 @@ class MyApp(QWidget):
             # driver.get('http://ticket.interpark.com/Ticket/Goods/GoodsInfo.asp?GoodsCode=' + g_goodsNum)
             driver.execute_script("window.open('');")
             driver.switch_to.window(driver.window_handles[1])
-            # 새로운 화면에서 열리도록 해야하나?
+            # 평상시 사용링크, 오픈시 사용불가
             driver.get('https://poticket.interpark.com/Book/BookSession.asp?GroupCode=' + g_goodsNum +'&Tiki=N&PlayDate='+ g_date + '&PlaySeq=')
+            # 오픈시 대기링크, 평상시 사용불가
             # driver.get('https://ordo.interpark.com/wait?pid=22004761&k=9fac82df253ef573e1d968928a6dbbf1&t=1656394047923&d=p&pmcode&genreCode&GroupCode=22004761&Tiki=&Point=&PlayDate=20220701&PlaySeq=028&BizCode=&BizMemberCode=&OneStopInfo&Language')
+            # 평상시 사용링크, 다른공연 오픈 시 테스트해보자.. 세션 id는 아무티켓예매 페이지에서 가능가능
+            # https://poticket.interpark.com/Book/BookMain.asp?GroupCode=22004761&Tiki=N&BizCode=WEBBR&BizMemberCode=&PlayDate=20220805&PlaySeq=&SessionId=1101D1C3DDC148A8B7A876A6E5E67E55&SIDBizCode=WEBBR&WaitBDate=&WaitBDateSeq="
             self.startInterpark()
         except:
             traceback.print_exc()
