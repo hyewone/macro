@@ -28,18 +28,20 @@ g_id = "won5854"
 g_pwd = "skfkrh@816"
 # 생년월일
 g_birth = "951209"
+# 세션 ID
+g_sessionId = 'BB890A9FB21AA27510A0D37CF96916A6'
 # 상품번호 ex: 22004761
-g_goodsNum = "22004761"
+g_goodsNum = "22007922"
 # 날짜 ex: 20220715
-g_date = "20220805"
+g_date = "20220731"
 # 회차 ex: 1, 2
-g_hoicha = '2'
+g_hoicha = '1'
 # 층 ex: 1층
 g_floor = "1층"
 # 석 ex: S석, VIP석
-g_seatGrade = "VIP석"
+g_seatGrade = "SR석"
 # 구역 ex: C열, E열
-g_block = "B열"
+g_block = "라열"
 
 # # 테스트 회차 2022년 07월 15일 1회차
 # arr1 = [ ['20220715', 1]
@@ -72,8 +74,8 @@ g_date_arr = [   '20220805'
 
 g_hoicah_arr = ['1', '2']
 g_floor_arr = ['1층', '2층', '3층']
-g_grade_arr = ['VIP석', 'S석', 'A석', 'R석', 'B석']
-g_block_arr = ['A열', 'B열', 'C열', 'D열', 'E열']
+g_grade_arr = ['VIP석', 'S석', 'A석', 'R석', 'B석', 'SR석']
+g_block_arr = ['A열', 'B열', 'C열', 'D열', 'E열', '가열', '나열', '다열', '라열']
 
 
 class MyApp(QWidget):
@@ -281,15 +283,19 @@ class MyApp(QWidget):
     def gotoTicketing(self):
         try :
             driver.switch_to.window(driver.window_handles[0])
+            # driver.get('https://tickets.interpark.com/goods/22006226')
+            # global g_sessionId
+            # g_sessionId = driver.find_element(By.XPATH, "//div[@class='sideBtnWrap']/a[@class='sideBtn is-primary']").get_attribute("href")
+
             # driver.get('http://ticket.interpark.com/Ticket/Goods/GoodsInfo.asp?GoodsCode=' + g_goodsNum)
             driver.execute_script("window.open('');")
             driver.switch_to.window(driver.window_handles[1])
             # 평상시 사용링크, 오픈시 사용불가
-            driver.get('https://poticket.interpark.com/Book/BookSession.asp?GroupCode=' + g_goodsNum +'&Tiki=N&PlayDate='+ g_date + '&PlaySeq=')
+            # driver.get('https://poticket.interpark.com/Book/BookSession.asp?GroupCode=' + g_goodsNum +'&Tiki=N&PlayDate='+ g_date + '&PlaySeq=')
             # 오픈시 대기링크, 평상시 사용불가
-            # driver.get('https://ordo.interpark.com/wait?pid=22004761&k=9fac82df253ef573e1d968928a6dbbf1&t=1656394047923&d=p&pmcode&genreCode&GroupCode=22004761&Tiki=&Point=&PlayDate=20220701&PlaySeq=028&BizCode=&BizMemberCode=&OneStopInfo&Language')
+            # driver.get('https://ordo.interpark.com/wait?pid=' + g_goodsNum + '&k=9fac82df253ef573e1d968928a6dbbf1&t=1656394047923&d=p&pmcode&genreCode&GroupCode=' + g_goodsNum + '&Tiki=&Point=&PlayDate=20220701&PlaySeq=028&BizCode=&BizMemberCode=&OneStopInfo&Language')
             # 평상시 사용링크, 다른공연 오픈 시 테스트해보자.. 세션 id는 아무티켓예매 페이지에서 가능가능
-            # https://poticket.interpark.com/Book/BookMain.asp?GroupCode=22004761&Tiki=N&BizCode=WEBBR&BizMemberCode=&PlayDate=20220805&PlaySeq=&SessionId=1101D1C3DDC148A8B7A876A6E5E67E55&SIDBizCode=WEBBR&WaitBDate=&WaitBDateSeq="
+            driver.get('https://poticket.interpark.com/Book/BookMain.asp?GroupCode=' + g_goodsNum + '&Tiki=N&BizCode=WEBBR&BizMemberCode=&PlayDate=20220805&PlaySeq=&SessionId=' + g_sessionId + '&SIDBizCode=WEBBR&WaitBDate=&WaitBDateSeq=')
             self.startInterpark()
         except:
             traceback.print_exc()
