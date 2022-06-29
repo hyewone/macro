@@ -42,6 +42,8 @@ g_floor = "1층"
 g_seatGrade = "SR석"
 # 구역 ex: C열, E열
 g_block = "라열"
+# url type
+g_urlType = '1'
 
 # # 테스트 회차 2022년 07월 15일 1회차
 # arr1 = [ ['20220715', 1]
@@ -119,13 +121,6 @@ class MyApp(QWidget):
         self.lineEditBirth.setGeometry(100, 90, 110, 25)
         self.lineEditBirth.textEdited.connect(self.changeInputBirth)
         
-        # 세션ID
-        labelBirth = QLabel('세션ID:', self)
-        labelBirth.setGeometry(250, 90, 70, 25)
-        self.lineEditSession = QLineEdit(self)
-        self.lineEditSession.setGeometry(320, 90, 110, 25)
-        self.lineEditSession.textEdited.connect(self.changeInputSession)
-        
         label1 = QLabel('---------------------------------------------------', self)
         label1.setGeometry(30, 125, 450, 25)
 
@@ -141,10 +136,14 @@ class MyApp(QWidget):
         # 공연일자
         labelDate = QLabel('공연일자:', self)
         labelDate.setGeometry(250, 150, 70, 25)
-        self.cbDate = QComboBox(self)
-        self.cbDate.addItems(g_date_arr)
-        self.cbDate.setGeometry(320, 150, 110, 25)
-        self.cbDate.currentIndexChanged.connect(self.changeComboDate)
+        # self.cbDate = QComboBox(self)
+        # self.cbDate.addItems(g_date_arr)
+        # self.cbDate.setGeometry(320, 150, 110, 25)
+        # self.cbDate.currentIndexChanged.connect(self.changeComboDate)
+        
+        self.lineEditDate = QLineEdit(self)
+        self.lineEditDate.setGeometry(320, 150, 110, 25)
+        self.lineEditDate.textEdited.connect(self.changeInputDate)
 
         # -----------------------------------------------
         
@@ -196,7 +195,8 @@ class MyApp(QWidget):
         self.lineEditPw.setText(g_pwd)
         self.lineEditBirth.setText(g_birth)
         self.lineEditNo.setText(g_goodsNum)
-        self.cbDate.setCurrentText(g_date)
+        # self.cbDate.setCurrentText(g_date)
+        self.lineEditDate.setText(g_date)
         self.cbHoicha.setCurrentText(g_hoicha)
         self.cbFoor.setCurrentText(g_floor)
         self.cbGrade.setCurrentText(g_seatGrade)
@@ -206,44 +206,67 @@ class MyApp(QWidget):
 
         # 1. 로그인
         btn = QPushButton('1. 로그인', self)
-        btn.setGeometry(30, 370, 200, 50)
+        btn.setGeometry(30, 390, 200, 50)
         btn.clicked.connect(self.loginInterpark)
+
+        # 티켓팅링크 타입 라디오
+        label = QLabel('티켓링크:', self)
+        label.setGeometry(30, 350, 70, 25)
+        self.radio = QRadioButton('상시', self)
+        self.radio.setGeometry(100, 350, 50, 25)
+        self.radio.clicked.connect(self.changeUrlTypeRadio)
+        self.radio.setChecked(True)
+        self.radio2 = QRadioButton('오픈', self)
+        self.radio2.setGeometry(150, 350, 50, 25)
+        self.radio2.clicked.connect(self.changeUrlTypeRadio)
+        self.radio3 = QRadioButton('대기', self)
+        self.radio3.setGeometry(200, 350, 50, 25)
+        self.radio3.clicked.connect(self.changeUrlTypeRadio)
+        
+        # 세션ID
+        self.labelSession = QLabel('세션ID:', self)
+        self.labelSession.setGeometry(250, 350, 70, 25)
+        self.labelSession.hide()
+        self.lineEditSession = QLineEdit(self)
+        self.lineEditSession.setGeometry(320, 350, 110, 25)
+        self.lineEditSession.textEdited.connect(self.changeInputSession)
+        self.lineEditSession.hide()
 
         # 2. 티켓팅 페이지 이동
         btn = QPushButton('2. 티켓팅 이동', self)
-        btn.setGeometry(250, 370, 200, 50)
+        btn.setGeometry(250, 390, 200, 50)
         btn.clicked.connect(self.gotoTicketing)
 
         # 3. 회차 및 좌석선택
         btn = QPushButton('3. 회차 및 좌석선택', self)
-        btn.setGeometry(30, 450, 200, 50)
+        btn.setGeometry(30, 470, 200, 50)
         btn.clicked.connect(self.selDayHoicha)
         btn.setStyleSheet("color: blue;")
 
         # 4. 좌석단계 좌석 재선택
         btn = QPushButton('4. 좌석 - 좌석 재선택', self)
-        btn.setGeometry(250, 450, 200, 50)
+        btn.setGeometry(250, 470, 200, 50)
         btn.clicked.connect(self.reSelSeatSeat)
 
         # 5. 결제단계 좌석 재선택
         btn = QPushButton('5. 결제 - 좌석 재선택', self)
-        btn.setGeometry(30, 530, 200, 50)
+        btn.setGeometry(30, 550, 200, 50)
         btn.clicked.connect(self.reSelSeatPay)
 
         # 6. 좌석선택완료
         btn = QPushButton('6. 좌석선택완료', self)
-        btn.setGeometry(250, 530, 200, 50) 
+        btn.setGeometry(250, 550, 200, 50) 
         btn.clicked.connect(self.afterProcess)
         btn.setStyleSheet("color: red;")
         
         # 7. 회차 재선택
         btn = QPushButton('7. 회차 재선택', self)
-        btn.setGeometry(30, 610, 200, 50)
+        btn.setGeometry(30, 630, 200, 50)
         btn.clicked.connect(self.selDayHoicha)
 
          # 8. 재시작
         btn = QPushButton('8. 재시작', self)
-        btn.setGeometry(250, 610, 200, 50)
+        btn.setGeometry(250, 630, 200, 50)
         btn.clicked.connect(self.reStart) 
 
         # # 종료 버튼
@@ -297,13 +320,19 @@ class MyApp(QWidget):
             # driver.get('http://ticket.interpark.com/Ticket/Goods/GoodsInfo.asp?GoodsCode=' + g_goodsNum)
             driver.execute_script("window.open('');")
             driver.switch_to.window(driver.window_handles[1])
-            # 평상시 사용링크, 오픈시 사용불가
-            # driver.get('https://poticket.interpark.com/Book/BookSession.asp?GroupCode=' + g_goodsNum +'&Tiki=N&PlayDate='+ g_date + '&PlaySeq=')
-            # 오픈시 대기링크, 평상시 사용불가
-            # driver.get('https://ordo.interpark.com/wait?pid=' + g_goodsNum + '&k=9fac82df253ef573e1d968928a6dbbf1&t=1656394047923&d=p&pmcode&genreCode&GroupCode=' + g_goodsNum + '&Tiki=&Point=&PlayDate=20220701&PlaySeq=028&BizCode=&BizMemberCode=&OneStopInfo&Language')
-            # 평상시 사용링크, 다른공연 오픈 시 테스트해보자.. 세션 id는 아무티켓예매 페이지에서 가능가능
-            driver.get('https://poticket.interpark.com/Book/BookMain.asp?GroupCode=' + g_goodsNum + '&Tiki=N&BizCode=WEBBR&BizMemberCode=&PlayDate=&PlaySeq=&SessionId=' + g_sessionId + '&SIDBizCode=WEBBR&WaitBDate=&WaitBDateSeq=')
-            self.startInterpark()
+
+            # 상시
+            if g_urlType == '1' :
+                driver.get('https://poticket.interpark.com/Book/BookSession.asp?GroupCode=' + g_goodsNum +'&Tiki=N&PlayDate='+ g_date + '&PlaySeq=')
+                # driver.get('https://ticket.interpark.com/Book/BookSession.asp?GroupCode=' + g_goodsNum +'&Tiki=N&Point=N&PlayDate='+ g_date + '&PlaySeq=&BizCode=&BizMemberCode=')
+            # 오픈직링
+            elif g_urlType == '2' :
+                driver.get('https://poticket.interpark.com/Book/BookMain.asp?GroupCode=' + g_goodsNum + '&Tiki=N&BizCode=WEBBR&BizMemberCode=&PlayDate=&PlaySeq=&SessionId=' + g_sessionId + '&SIDBizCode=WEBBR&WaitBDate=&WaitBDateSeq=')
+            # 대기창
+            elif g_urlType == '3' :
+                driver.get('https://ordo.interpark.com/wait?pid=' + g_goodsNum + '&k=9fac82df253ef573e1d968928a6dbbf1&t=1656394047923&d=p&pmcode&genreCode&GroupCode=' + g_goodsNum + '&Tiki=&Point=&PlayDate'+ g_date + '=&PlaySeq=&BizCode=&BizMemberCode=&OneStopInfo&Language')
+            
+            # self.startInterpark()
         except:
             traceback.print_exc()
 
@@ -470,6 +499,9 @@ class MyApp(QWidget):
     def changeInputNo(self):
         global g_goodsNum
         g_goodsNum = self.lineEditNo.text()
+    def changeInputDate(self):
+        global g_date
+        g_date = self.lineEditDate.text()
     def changeComboDate(self):
         global g_date
         g_date = self.cbDate.currentText()
@@ -485,6 +517,20 @@ class MyApp(QWidget):
     def changeComboBlock(self):
         global g_block
         g_block = self.cbBlock.currentText()
+    def changeUrlTypeRadio(self):
+        global g_urlType
+        if self.radio.isChecked() :  
+            g_urlType = '1' 
+            self.labelSession.hide()
+            self.lineEditSession.hide()
+        elif self.radio2.isChecked() : 
+            g_urlType = '2' 
+            self.labelSession.hide()
+            self.lineEditSession.hide()
+        elif self.radio3.isChecked() : 
+            g_urlType = '3' 
+            self.labelSession.show()
+            self.lineEditSession.show()
     
     #def easyocrChar(self):
         # print("easyocrChar")
