@@ -321,6 +321,11 @@ class MyApp(QWidget):
             driver.execute_script("window.open('');")
             driver.switch_to.window(driver.window_handles[1])
 
+            # 개발자도구를 킨 상태에서..  들어가서 스크립트 파일을 보쟈
+            #   https://poticket.interpark.com/Book/BookSession.asp?GroupCode=22004500&Tiki=N&PlayDate=20220814&PlaySeq=
+            #   https://ticket.interpark.com/Book/BookSession.asp?GroupCode=22004500&Tiki=N&PlayDate=20220814&PlaySeq=
+
+
             # 상시
             if g_urlType == '1' :
                 driver.get('https://poticket.interpark.com/Book/BookSession.asp?GroupCode=' + g_goodsNum +'&Tiki=N&PlayDate='+ g_date + '&PlaySeq=')
@@ -525,12 +530,12 @@ class MyApp(QWidget):
             self.lineEditSession.hide()
         elif self.radio2.isChecked() : 
             g_urlType = '2' 
-            self.labelSession.hide()
-            self.lineEditSession.hide()
-        elif self.radio3.isChecked() : 
-            g_urlType = '3' 
             self.labelSession.show()
             self.lineEditSession.show()
+        elif self.radio3.isChecked() : 
+            g_urlType = '3' 
+            self.labelSession.hide()
+            self.lineEditSession.hide()
     
     #def easyocrChar(self):
         # print("easyocrChar")
