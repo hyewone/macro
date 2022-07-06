@@ -1,0 +1,157 @@
+reCAPTCHAUse='N' -> 캡챠 무시
+
+fts_doPay() -> 결제하기..
+netfunnel_complete() 대상 상품은 넷퓨넬 종료
+
+fts_doPayProcess()
+
+<form id="SendPayForm_id" method="post" action="/Pages/InicisNewPG/INIStdPayResponse.aspx" target="_ipayFrame">
+	<input type="hidden" name="version" id="version" value="1.0">
+	<input type="hidden" name="currency" id="currency" value="WON">
+	<input type="hidden" name="goodsname" id="goodsname" value="공연티켓상품">
+	<input type="hidden" name="mid" id="mid" value="yes24ent81">
+	<input type="hidden" name="oid" id="oid" value="Stdpay_1656998275087">
+	<input type="hidden" name="price" id="price" value="61500">
+	<input type="hidden" name="buyername" id="buyername" value="최혜원">
+	<input type="hidden" name="buyertel" id="buyertel" value="01056755857">
+	<input type="hidden" name="buyeremail" id="buyeremail" value="won5854@naver.com">
+	<input type="hidden" name="timestamp" id="timestamp" value="1656998275087">
+	<input type="hidden" name="signature" id="signature" value="06e8aeb0e0b2792e4a7d4b83372f9dba758550d6858fec4afd60d2eb019cb301">
+	<input type="hidden" name="returnUrl" id="returnUrl" value="http://ticket.yes24.com/Pages/InicisNewPG/INIStdPayResponse.aspx">
+	<input type="hidden" name="closeUrl" id="closeUrl" value="http://ticket.yes24.com/Pages/InicisNewPG/INIStdPayClose.aspx?t=pay">
+	<input type="hidden" name="mKey" id="mKey" value="ed0df3820fb11e73c8ee503c879b3144cc28d7a7ac673470e7f1cf87956cc190">
+	<input type="hidden" name="gopaymethod" id="gopaymethod" value="Card">
+	<input type="hidden" name="ini_PAYSHOT_KEY" id="ini_PAYSHOT_KEY" value="YE2420160808010101001113278583">
+	<input type="hidden" name="payViewType" id="payViewType" value="overlay">
+	<input type="hidden" name="quotabase" id="quotabase" value="2:3:4:5:6:7:8:9:10:11:12">
+	<input type="hidden" name="acceptmethod" id="acceptmethod" value="HPP(1):no_receipt:va_receipt:vbanknoreg(0):below1000:popreturn:usespcp:cardpoint:cardshowopt(04-6):">
+	<input type="hidden" name="merchantData" id="merchantData" 
+
+value="ksPayMethod=001000000000&amp;
+ksPrice=61500&amp;
+ksMid=yes24ent81&amp;
+ksIdPerf=42783&amp;
+ksIsMPoint=0&amp;
+ksIsHcardOpt=0&amp;
+ksIdTime=1181495&amp;
+ksTimeOption=2&amp;
+ksIdSeat=1200023&amp;
+ksIdNonSeat=T192%24252%24188%24174-1%2C&amp;
+ksIdSeatClassPrice=T192%24252%24188%24174-1-60500%2C&amp;
+ksPromotionList=&amp;
+ksCouponList=&amp;ksSeatCnt=1&amp;
+ksDiscounts=&amp;
+ksCoupons=&amp
+;ksYesMoney=&amp;
+ksYesDeposit=&amp;ksYesGift=&amp;ksYesGiftAmt=0&amp;ksGiftTicket=&amp;ksGiftTicketAmt=0&amp;ksBenepiaPoint=0&amp;ksBenepiaPointInfo=&amp;ksEXanaduPoint=0&amp;ksEXanaduPointKey=&amp;ksPTitle=2022+HWANG+IN+YOUP+1st+Asia+Fan+Meeting+in+Seoul&amp;ksSelDate=2022-07-24&amp;ksTotPrice=61500&amp;ksEtcPrice=0&amp;ksUserMail=won5854%40naver.com&amp;ksUserName=%EC%B5%9C%ED%98%9C%EC%9B%90&amp;ksUserTel=01056755857&amp;ksUserMobile=01056755857&amp;ksGoodsName=%EA%B3%B5%EC%97%B0%ED%8B%B0%EC%BC%93%EC%83%81%ED%92%88&amp;SMFanclubNo=&amp;ksDelivery=&amp;ksEmergencyName=%EC%B5%9C%ED%98%9C%EC%9B%90&amp;ksEmergencyTel=010-5675-5857&amp;ksEmergencyMail=won5854%40naver.com&amp;ksEtcFee=69%231000%5E&amp;ksEtcValidTicketCnt=1&amp;ksPayBank=11629&amp;ksReceipt=&amp;ksReceiptNo=&amp;ksOKCashbagCardNo=&amp;ksIsYesPointYN=N&amp;ksRefundBankId=0&amp;ksRefundBankAccount=&amp;ksRefundBankUserName=&amp;ServiceCookies=MTMyNzg1ODNgd29uNTg1NGDD1sf9v%2FhgMGAwMWB3b241ODU0YGAxMzI3ODU4M2AyN2BuYWhDUE9LdVAwS0VUWisyUkJ1cklMR3FVV3NUVFd4anBpM0hWZGs5WjgzbWlxczZWSUZINWZUOWphMUhFUWd0Q1o1QkZoSUlXSXdxWDA2S2E5OGFHUT09YGNoL3R2U3U5d1JYZ0dMQy85aiszSWIrSndjNG9XK0pBS3VDTVlVTWczRlNIMDFkejhUL3VRdUNmOEJwak1IQXYzTDl0SGJuUWpLeERGQTBWdVBmQ2ZIU1AwSFp2SDdmMGlKcmZ4eXBQMEpoeFB4emdlL2l6MmFGckhDYWJKdk91dzY0UVNGemJrZ2d2T3J6MjhRSnRQUT09YE5KZlJ2SGVEbVV5ZUZCVlFWVG1FT1E9PQ%3D%3D&amp;Benepia=&amp;EXanadu=">
+	<iframe id="_ipayFrame" name="_ipayFrame" frameborder="0" width="0" height="0" style="background:#373635;"></iframe>
+</form>
+
+
+
+
+<2개>
+
+<form id="SendPayForm_id" method="post" action="/Pages/InicisNewPG/INIStdPayResponse.aspx" target="_ipayFrame">
+	<input type="hidden" name="version" id="version" value="1.0">
+	<input type="hidden" name="currency" id="currency" value="WON">
+	<input type="hidden" name="goodsname" id="goodsname" value="공연티켓상품">
+	<input type="hidden" name="mid" id="mid" value="yes24ent81">
+	<input type="hidden" name="oid" id="oid" value="Stdpay_1656999592284">
+	<input type="hidden" name="price" id="price" value="123000">
+	<input type="hidden" name="buyername" id="buyername" value="최혜원">
+	<input type="hidden" name="buyertel" id="buyertel" value="01056755857">
+	<input type="hidden" name="buyeremail" id="buyeremail" value="won5854@naver.com">
+	<input type="hidden" name="timestamp" id="timestamp" value="1656999592284">
+	<input type="hidden" name="signature" id="signature" value="20142e3aee2077a557ba93b87e67e57dd344bc22f53ea06c7b248cb1ac591531">
+	<input type="hidden" name="returnUrl" id="returnUrl" value="http://ticket.yes24.com/Pages/InicisNewPG/INIStdPayResponse.aspx">
+	<input type="hidden" name="closeUrl" id="closeUrl" value="http://ticket.yes24.com/Pages/InicisNewPG/INIStdPayClose.aspx?t=pay">
+	<input type="hidden" name="mKey" id="mKey" value="ed0df3820fb11e73c8ee503c879b3144cc28d7a7ac673470e7f1cf87956cc190">
+	<input type="hidden" name="gopaymethod" id="gopaymethod" value="Card">
+	<input type="hidden" name="ini_PAYSHOT_KEY" id="ini_PAYSHOT_KEY" value="YE2420160808010101001113278583">
+	<input type="hidden" name="payViewType" id="payViewType" value="overlay">
+	<input type="hidden" name="quotabase" id="quotabase" value="2:3:4:5:6:7:8:9:10:11:12">
+	<input type="hidden" name="acceptmethod" id="acceptmethod" value="HPP(1):no_receipt:va_receipt:vbanknoreg(0):below1000:popreturn:usespcp:cardpoint:cardshowopt(04-6):">
+	<input type="hidden" name="merchantData" id="merchantData" value="ksPayMethod=001000000000&amp;ksPrice=123000&amp;ksMid=yes24ent81&amp;ksIdPerf=42783&amp;ksIsMPoint=0&amp;ksIsHcardOpt=0&amp;ksIdTime=1181495&amp;ksTimeOption=2&amp;ksIdSeat=1200038-1200039&amp;ksIdNonSeat=T192%24252%24188%24174-2%2C&amp;ksIdSeatClassPrice=T192%24252%24188%24174-2-60500%2C&amp;ksPromotionList=&amp;ksCouponList=&amp;ksSeatCnt=2&amp;ksDiscounts=&amp;ksCoupons=&amp;ksYesMoney=&amp;ksYesDeposit=&amp;ksYesGift=&amp;ksYesGiftAmt=0&amp;ksGiftTicket=&amp;ksGiftTicketAmt=0&amp;ksBenepiaPoint=0&amp;ksBenepiaPointInfo=&amp;ksEXanaduPoint=0&amp;ksEXanaduPointKey=&amp;ksPTitle=2022+HWANG+IN+YOUP+1st+Asia+Fan+Meeting+in+Seoul&amp;ksSelDate=2022-07-24&amp;ksTotPrice=123000&amp;ksEtcPrice=0&amp;ksUserMail=won5854%40naver.com&amp;ksUserName=%EC%B5%9C%ED%98%9C%EC%9B%90&amp;ksUserTel=01056755857&amp;ksUserMobile=01056755857&amp;ksGoodsName=%EA%B3%B5%EC%97%B0%ED%8B%B0%EC%BC%93%EC%83%81%ED%92%88&amp;captchaText=UE96B&amp;captchaKey=nHNzDoYdgVcpJre8&amp;SMFanclubNo=&amp;ksDelivery=&amp;ksEmergencyName=%EC%B5%9C%ED%98%9C%EC%9B%90&amp;ksEmergencyTel=010-5675-5857&amp;ksEmergencyMail=won5854%40naver.com&amp;ksEtcFee=69%232000%5E&amp;ksEtcValidTicketCnt=2&amp;ksPayBank=11629&amp;ksReceipt=&amp;ksReceiptNo=&amp;ksOKCashbagCardNo=&amp;ksIsYesPointYN=N&amp;ksRefundBankId=0&amp;ksRefundBankAccount=&amp;ksRefundBankUserName=&amp;ServiceCookies=MTMyNzg1ODNgd29uNTg1NGDD1sf9v%2FhgMGAwMWB3b241ODU0YGAxMzI3ODU4M2AyN2BuYWhDUE9LdVAwS0VUWisyUkJ1cklMR3FVV3NUVFd4anBpM0hWZGs5WjgzbWlxczZWSUZINWZUOWphMUhFUWd0Q1o1QkZoSUlXSXdxWDA2S2E5OGFHUT09YGNoL3R2U3U5d1JYZ0dMQy85aiszSWIrSndjNG9XK0pBS3VDTVlVTWczRlNIMDFkejhUL3VRdUNmOEJwak1IQXYzTDl0SGJuUWpLeERGQTBWdVBmQ2ZIU1AwSFp2SDdmMGlKcmZ4eXBQMEpoeFB4emdlL2l6MmFGckhDYWJKdk91dzY0UVNGemJrZ2d2T3J6MjhRSnRQUT09YE5KZlJ2SGVEbVV5ZUZCVlFWVG1FT1E9PQ%3D%3D&amp;Benepia=&amp;EXanadu=">
+	<iframe id="_ipayFrame" name="_ipayFrame" frameborder="0" width="0" height="0" style="background:#373635;"></iframe>
+</form>
+
+<inicisPayinfo>
+
+{
+    "mid": "yes24ent81",
+    "timestamp": "1656999592284",
+    "oid": "Stdpay_1656999592284",
+    "signature": "20142e3aee2077a557ba93b87e67e57dd344bc22f53ea06c7b248cb1ac591531",
+    "mKey": "ed0df3820fb11e73c8ee503c879b3144cc28d7a7ac673470e7f1cf87956cc190",
+    "buyername": "최혜원",
+    "buyertel": "01056755857",
+    "buyermobile": "01056755857",
+    "buyeremail": "won5854@naver.com",
+    "returnUrl": "",
+    "closeUrl": "",
+    "onlyUsedCardCode": "",
+    "iniPAYSHOTKEY": "YE2420160808010101001113278583",
+    "price": 123000
+}
+
+
+<merchantObject>
+
+{
+    "ksPayMethod": "001000000000",
+    "ksPrice": 123000,
+    "ksMid": "yes24ent81",
+    "ksIdPerf": "42783",
+    "ksIsMPoint": "0",
+    "ksIsHcardOpt": "0",
+    "ksIdTime": "1181495",
+    "ksTimeOption": "2",
+    "ksIdSeat": "1200038-1200039",
+    "ksIdNonSeat": "T192$252$188$174-2,",
+    "ksIdSeatClassPrice": "T192$252$188$174-2-60500,",
+    "ksPromotionList": "",
+    "ksCouponList": "",
+    "ksSeatCnt": 2,
+    "ksDiscounts": "",
+    "ksCoupons": "",
+    "ksYesMoney": "",
+    "ksYesDeposit": "",
+    "ksYesGift": "",
+    "ksYesGiftAmt": 0,
+    "ksGiftTicket": "",
+    "ksGiftTicketAmt": 0,
+    "ksBenepiaPoint": 0,
+    "ksBenepiaPointInfo": "",
+    "ksEXanaduPoint": 0,
+    "ksEXanaduPointKey": "",
+    "ksPTitle": "2022 HWANG IN YOUP 1st Asia Fan Meeting in Seoul",
+    "ksSelDate": "2022-07-24",
+    "ksTotPrice": 123000,
+    "ksEtcPrice": 0,
+    "ksUserMail": "won5854@naver.com",
+    "ksUserName": "최혜원",
+    "ksUserTel": "01056755857",
+    "ksUserMobile": "01056755857",
+    "ksGoodsName": "공연티켓상품",
+    "captchaText": "UE96B",
+    "captchaKey": "nHNzDoYdgVcpJre8",
+    "SMFanclubNo": "",
+    "ksDelivery": "",
+    "ksEmergencyName": "최혜원",
+    "ksEmergencyTel": "010-5675-5857",
+    "ksEmergencyMail": "won5854@naver.com",
+    "ksEtcFee": "69#2000^",
+    "ksEtcValidTicketCnt": "2",
+    "ksPayBank": "11629",
+    "ksReceipt": "",
+    "ksReceiptNo": "",
+    "ksOKCashbagCardNo": "",
+    "ksIsYesPointYN": "N",
+    "ksRefundBankId": "0",
+    "ksRefundBankAccount": "",
+    "ksRefundBankUserName": "",
+    "ServiceCookies": "MTMyNzg1ODNgd29uNTg1NGDD1sf9v/hgMGAwMWB3b241ODU0YGAxMzI3ODU4M2AyN2BuYWhDUE9LdVAwS0VUWisyUkJ1cklMR3FVV3NUVFd4anBpM0hWZGs5WjgzbWlxczZWSUZINWZUOWphMUhFUWd0Q1o1QkZoSUlXSXdxWDA2S2E5OGFHUT09YGNoL3R2U3U5d1JYZ0dMQy85aiszSWIrSndjNG9XK0pBS3VDTVlVTWczRlNIMDFkejhUL3VRdUNmOEJwak1IQXYzTDl0SGJuUWpLeERGQTBWdVBmQ2ZIU1AwSFp2SDdmMGlKcmZ4eXBQMEpoeFB4emdlL2l6MmFGckhDYWJKdk91dzY0UVNGemJrZ2d2T3J6MjhRSnRQUT09YE5KZlJ2SGVEbVV5ZUZCVlFWVG1FT1E9PQ==",
+    "Benepia": "",
+    "EXanadu": ""
+}
