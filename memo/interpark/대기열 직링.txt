@@ -1,0 +1,10 @@
+https://ordo.interpark.com/wait
+GroupCode
+d=p
+pid
+Tiki=
+Point=
+PlayDate=20220630
+PlaySeq=043
+BizCode=
+BizMemberCode=

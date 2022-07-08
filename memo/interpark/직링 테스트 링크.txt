@@ -1,0 +1,8 @@
+https://poticket.interpark.com/Book/BookSession.asp?GroupCode=22008289&Tiki=&PlayDate=20220814&PlaySeq=
+
+https://poticket.interpark.com/Book/BookMain.asp?GroupCode=22008289&Tiki=N&BizCode=WEBBR&BizMemberCode=&PlayDate=20220814&PlaySeq=&SessionId=56B2AB3443924C748D6D06D218D35C91&SIDBizCode=WEBBR&WaitBDate=&WaitBDateSeq=
+
+---------------------------------------------------------------------------------------------------------------------------
+https://ordo.interpark.com/wait?GroupCode=22008289&d=p&pid=22008289&Tiki=&Point=&PlayDate=20220815&PlaySeq=001&BizCode=&BizMemberCode=
+
+https://ordo.interpark.com/wait?GroupCode=22008289&d=p&pid=22008289&Tiki=&Point=&PlayDate=20220815&PlaySeq=&BizCode=&BizMemberCode=
